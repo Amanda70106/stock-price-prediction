@@ -2,8 +2,8 @@
 # from sklearn import datasets
 # import pydotplus
 
-f = open('3035.txt','r')
-fout = open('3035.csv','w',encoding='utf-8')
+f = open('3035.txt','r') # need to modify the name
+fout = open('3035.csv','w',encoding='utf-8') # need to modify the name
 
 fl = f.readlines()
 

@@ -6,10 +6,10 @@ import time
 # options = Options()
 # options.add_argument("--disable-notifications")
  
-chrome = webdriver.Chrome('./chromedriver.exe')
+chrome = webdriver.Chrome('./chromedriver.exe') 
 chrome.get("https://www.twse.com.tw/zh/page/trading/exchange/STOCK_DAY.html")
 
-stock_list = ['2317','2330']
+stock_list = ['2317','2330'] # can adjust the stock list
 for stock in stock_list:
     file = stock + '.txt'
     f = open(file,'w',encoding='utf-8')
