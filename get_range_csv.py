@@ -7,8 +7,8 @@ file = input("input the stock number: ")
 start_year = int(input("input the start year (99~110): "))
 end_year = int(input("input the last year (99~110): "))
 
-in_file = file + "_all.csv"
-out_file = file + "_" + str(start_year) + "_to_" + str(end_year) + ".csv"
+in_file = "csv/" + file + "_all.csv"
+out_file = "csv/" + file + "_" + str(start_year) + "_to_" + str(end_year) + ".csv"
 
 f = open(in_file,'r') # need to modify the name
 fout = open(out_file,'w',encoding='utf-8') # need to modify the name
