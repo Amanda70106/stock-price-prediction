@@ -16,7 +16,7 @@ attributes = CurrentCustomers.drop('result',axis=1)
 label = CurrentCustomers['result']
 
 clf = SVC(kernel='linear', C = 1.0)
-scores = cross_val_score(clf,attributes,label,cv=10,n_jobs=12)
+scores = cross_val_score(clf,attributes,label,cv=10,n_jobs=64)
 print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std()*2))
 
 train_attributes = CurrentCustomers.drop('result', axis = 1)
