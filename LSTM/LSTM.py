@@ -12,7 +12,7 @@ def denormalize(original_data, scaled_data):
   denorm = scaled_data.apply(lambda x: x*(np.max(original_data)-np.min(original_data))+np.min(original_data))
   return denorm
 
-input_directory = '..csv/'
+input_directory = 'csv/'
 filename = input('Input the csv file name: ')
 
 df = pd.read_csv(input_directory + filename)
