@@ -3,6 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import classification_report, confusion_matrix
+import os
 
 def normalize(data):
   norm = data.apply(lambda x: (x - np.min(x)) / (np.max(x) - np.min(x)))
@@ -12,9 +13,8 @@ def denormalize(original_data, scaled_data):
   denorm = scaled_data.apply(lambda x: x*(np.max(original_data)-np.min(original_data))+np.min(original_data))
   return denorm
 
-input_directory = 'csv/'
 filename = input('Input the csv file name: ')
-
+input_directory = os.path.abspath("../csv") + '/'
 df = pd.read_csv(input_directory + filename)
 df = df.drop(['dividend', 'PE', 'netWorth', 'diff'], axis=1)
 split_boundary = 2000
@@ -45,8 +45,8 @@ backup_test_nparry = np.empty(shape=[0, 1])
 
 for i in range(interval, test_data.shape[0]):
     X_test.append(test_data_scaled.iloc[i-interval:i, :-1])
-    Y_test = np.append(Y_test, test_data.iloc[i:i+1, 5:6], axis=0)
-    backup_test_nparry = np.append(backup_test_nparry, test_data_reverse_date.iloc[i:i+1, 0:1], axis=0)
+    Y_test = np.append(Y_test, test_data.iloc[i:i+1, 5:6])
+    backup_test_nparry = np.append(backup_test_nparry, test_data_reverse_date.iloc[i:i+1, 0:1])
 
 print(backup_test_nparry.shape)
 print(Y_test.shape)
@@ -101,11 +101,15 @@ predicted_stock_price = denormalize(Y_test, predicted_stock_price)  # to get the
 
 backup_test = pd.concat([backup_test, predicted_stock_price], axis=1)
 
-output_directory = 'output/'
-filename = filename.split(".")
-output_filename = output_directory + '_' + filename[0] + '_' + interval + '.csv'
+output_directory = os.path.abspath('./output/') 
 
-backup_test.to_csv(output_directory, mode = 'a', header = True)
+if not os.path.isdir(output_directory):
+  os.makedirs(output_directory)
+
+
+output_filename = output_directory + "/LSTM_" + str(interval) + '_' + filename
+
+backup_test.to_csv(output_filename, header = True, index = False)
 
 # Visualising the results
 plt.plot(Y_test, color = 'red', label = 'Real Google Stock Price')  # 紅線表示真實股價
