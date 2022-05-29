@@ -8,10 +8,10 @@ e.g. python3 cut.py 2303.csv 12
 資料會放在data_xxx的資料夾內，如果要重新切資料，記得把舊的資料夾刪掉（我懶得寫刪資料了）
 
 # 進度
-algorithm|10年(accuracy rate)|5年|3年|
+algorithm|10年(f1 0/1)|5年|3年|
 ---------|----|---|---|
-DecisionTree|0.75|*|*|
-ANN|0.85|*|*|
+DecisionTree|*|*|*|
+ANN|0.87/0.83|*|*|
 SVDD|*|*|*|
 LSTM|*|*|*|
 Prophet|*|*|*|
