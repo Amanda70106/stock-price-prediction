@@ -18,3 +18,7 @@ Prophet|*|*|*|
 RandomForest|*|*|*|
 Boosting|*|*|*|
 Bagging|*|*|*|
+
+# 資料切法
+* 訓練資料tail(2000)
+* 測試資料head(939)
