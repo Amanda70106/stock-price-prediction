@@ -1,5 +1,5 @@
 # uki-uki-diasuki
-## 切資料
+## ~~切資料~~
 ### 輸入方法
 ```
 python3 cut.py [資料名稱] [切幾份]
