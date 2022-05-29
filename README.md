@@ -11,7 +11,7 @@ e.g. python3 cut.py 2303.csv 12
 algorithm|10年(accuracy rate)|5年|3年|
 ---------|----|---|---|
 DecisionTree|0.75|*|*|
-ANN|*|*|*|
+ANN|0.85|*|*|
 SVDD|*|*|*|
 LSTM|*|*|*|
 Prophet|*|*|*|
