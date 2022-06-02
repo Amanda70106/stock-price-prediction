@@ -12,8 +12,8 @@ stock_list = [1210,1231,2344,2449,2603,2633,3596,1215,1232,2345,2454,2607,2634,3
 for stock in stock_list:
     print(stock)
     input_file = "../csv/" + str(stock) + ".csv"
-    output_file = "../output/" + str(stock) + "_result.txt"
-    csv_file = "../csv/pridiction_result/" + str(stock) + ".csv"
+    output_file = "/output/" + str(stock) + "_result.txt"
+    csv_file = "/csv/pridiction_result/" + str(stock) + ".csv"
     df = pd.read_csv(input_file)
     df = df.drop(['data','diff', 'X'], axis=1)
     f = open(output_file, 'w',encoding='utf-8')
