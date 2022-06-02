@@ -6,14 +6,19 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, scale
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report, confusion_matrix
+import os
+filename = input('Input the csv file name: ')
+input_directory = os.path.abspath("../csv") + '/'
+datasets = pd.read_csv(input_directory + filename)
+output_directory = os.path.abspath('./output/') 
+if not os.path.isdir(output_directory):
+  os.makedirs(output_directory)
 
-df = pd.read_csv('csv/2454.csv')
-df = df.drop(['date','diff'], axis=1)
-CurrentCustomers = df.head(2000)
-NewCustomers = df.tail(939)
+CurrentCustomers=datasets.head(2000)
+NewCustomers=datasets.tail(939)
 
-attributes = CurrentCustomers.drop('result',axis=1)
-label = CurrentCustomers['result']
+attributes=CurrentCustomers.drop(['data','diff','result'],axis=1)
+label=CurrentCustomers['result']
 
 attributes_train, attributes_test, label_train, label_test = train_test_split(attributes, label)
 scaler = StandardScaler()
