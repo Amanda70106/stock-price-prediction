@@ -7,6 +7,14 @@ from sklearn.preprocessing import StandardScaler, scale
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 import os
+def normalize(data):
+  norm = data.apply(lambda x: (x - np.min(x)) / (np.max(x) - np.min(x)))
+  return norm
+
+def denormalize(original_data, scaled_data):
+  denorm = scaled_data.apply(lambda x: x*(np.max(original_data)-np.min(original_data))+np.min(original_data))
+  return denorm
+  
 filename = input('Input the csv file name: ')
 input_directory = os.path.abspath("../csv") + '/'
 datasets = pd.read_csv(input_directory + filename)
