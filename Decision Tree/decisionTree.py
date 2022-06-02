@@ -10,9 +10,11 @@ from sklearn.model_selection import cross_val_score
 from sklearn import metrics
 stock_list = [1210,1231,2344,2449,2603,2633,3596,1215,1232,2345,2454,2607,2634,3682,1216,1434,2379,2455,2609,2637,4904,1218,1702,2408,2459,2610,3034,5388,1227,2330,2412,2468,2615,3035,1229,2337,2439,2498,2618,3045]
 for stock in stock_list:
-    input_file = "csv/" + str(stock) + ".csv"
-    output_file = "output/" + str(stock) + "_result.txt"
-    df = pd.read_csv('csv/2454.csv')
+    print(stock)
+    input_file = "../csv/" + str(stock) + ".csv"
+    output_file = "../output/" + str(stock) + "_result.txt"
+    csv_file = "../csv/pridiction_result/" + str(stock) + ".csv"
+    df = pd.read_csv(input_file)
     df = df.drop(['data','diff', 'X'], axis=1)
     f = open(output_file, 'w',encoding='utf-8')
     # print(df)
@@ -39,12 +41,14 @@ for stock in stock_list:
     test_attributes = NewCustomers.drop('result',axis=1)
     test_label = NewCustomers['result']
     y_prediction = DT_Model.predict(test_attributes)
-
-    print(confusion_matrix(test_label,y_prediction))
-    print(classification_report(test_label,y_prediction))
+    f.write(str(confusion_matrix(test_label,y_prediction)))
+    f.write('\n')
+    f.write(str(classification_report(test_label,y_prediction)))
+    # print(confusion_matrix(test_label,y_prediction))
+    # print(classification_report(test_label,y_prediction))
 
     Prediction_result = pd.DataFrame(test_attributes)
     Prediction_result["Prediction_Result"]=y_prediction
 
-    Prediction_result.to_csv('prediction_result_dt.csv',mode ='a', header = True)
+    Prediction_result.to_csv(csv_file,mode ='w', header = True)
     #plt.show()
