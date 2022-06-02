@@ -94,6 +94,10 @@ regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
 regressor.fit(X_train, Y_train, epochs = 100, batch_size = 32)
 
 predicted_stock_price = regressor.predict(X_test)
+print("Ytest")
+print(Y_test)
+print("Predicted")
+print(predicted_stock_price)
 
 predicted_stock_price = pd.DataFrame(predicted_stock_price)
 
