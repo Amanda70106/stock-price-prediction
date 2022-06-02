@@ -10,6 +10,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestRegressor
 from sklearn import metrics
 import math
+from sklearn.metrics import classification_report,confusion_matrix
 def normalize(data):
   norm = data.apply(lambda x: (x - np.min(x)) / (np.max(x) - np.min(x)))
   return norm
@@ -17,9 +18,9 @@ def normalize(data):
 def denormalize(original_data, scaled_data):
   denorm = scaled_data.apply(lambda x: x*(np.max(original_data)-np.min(original_data))+np.min(original_data))
   return denorm
-# def mathew(original, predict):
-#     tn, fp, fn, tp = confusion_matrix(original,predict).ravel()
-#     return (tp*tn-fp*fn)/math.sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))
+def mathew(original, predict):
+    tn, fp, fn, tp = confusion_matrix(original,predict).ravel()
+    return (tp*tn-fp*fn)/math.sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))
 
 
 
@@ -42,6 +43,7 @@ for stock in stock_list:
   print("MSE: %.3f (%.3f)"%(mean(n_score),std(n_score)))
   learned_model = RFRegressor.fit(attributes,label)
   test_attributes = NewPrice.drop('close',axis=1)
+  result = test_attributes['result']
   test_attributes = test_attributes.drop(['X','data','diff','result'],axis=1)
   test_lable = NewPrice['close']
   y_prediction = learned_model.predict(test_attributes)
@@ -49,7 +51,28 @@ for stock in stock_list:
   print("Mean Squared Error:",metrics.mean_squared_error(test_lable,y_prediction))
   print("Root Mean Squared Error:", np.sqrt(metrics.mean_squared_error(test_lable,y_prediction)))
   prediction_result = pd.DataFrame(NewPrice)
-  #print(y_prediction)
+  predict_0 = np.array([0])
+  for i in range(51):
+    if i==0:
+      if y_prediction[i+1]>y_prediction[i]:
+        predict_0 = np.array([1])
+      else:
+        predict_0 = np.array([0])
+    if y_prediction[i+1]>y_prediction[i]:
+      predict_0 = np.append(predict_0, 1)
+    else:
+      predict_0 = np.append(predict_0, 0)
+  predict_0 = np.append(predict_0, 0)
+
+  print(confusion_matrix(result,predict_0))
+  print(classification_report(result,predict_0))
+  m=mathew(result,predict_0)
   prediction_result['Prediction_Result']= y_prediction
+  prediction_result['Prediction_Result_0or1']=predict_0
   output_filename = "outputr/RandomForestR" + str(stock) +".csv"
   prediction_result.to_csv(output_filename,mode='w' ,header = True, index = False)
+  f.write(str(confusion_matrix(result,predict_0)))
+  f.write('\n')
+  f.write(str(classification_report(result,predict_0)))
+  f.write('\n')
+  f.write("matthews: %.4f" % (m))
