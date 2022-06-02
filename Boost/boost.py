@@ -19,11 +19,11 @@ output_directory = os.path.abspath('./output/')
 if not os.path.isdir(output_directory):
   os.makedirs(output_directory)
 
-CurrentCustomers=datasets.head(2000)
-NewCustomers=datasets.tail(939)
+CurrentCustomers=datasets.head(2900)
+NewCustomers=datasets.tail(39)
 NewCustomers.shape
 
-attributes=CurrentCustomers.drop(['data','diff','result'],axis=1)
+attributes=CurrentCustomers.drop(['X','data','diff','result'],axis=1)
 attributes = normalize(attributes)
 label=CurrentCustomers['result']
 Boosting_model = AdaBoostClassifier(base_estimator=None,n_estimators=200)
@@ -31,14 +31,15 @@ print(Boosting_model)
 n_score = cross_val_score(Boosting_model,attributes,label,scoring='f1_macro',cv=10,n_jobs=-1)
 print('F-Score: %.3f (%.3f)'%(mean(n_score),std(n_score)))
 learned_model=Boosting_model.fit(attributes,label)
-test_attributes = NewCustomers.drop(['data','diff','result'],axis=1)
+test_attributes = NewCustomers.drop(['X','data','diff','result'],axis=1)
 test_label=NewCustomers['result']
+original =test_attributes
 test_attributes = normalize(test_attributes)
 y_prediction = learned_model.predict(test_attributes)
 from sklearn.metrics import classification_report,confusion_matrix
 print(confusion_matrix(test_label,y_prediction))
 print(classification_report(test_label,y_prediction))
-Predict_result = pd.DataFrame(test_attributes)
+Predict_result = pd.DataFrame(original)
 Predict_result["Prediction_Result"] = y_prediction
 output_filename = output_directory + "/Boosting_" + filename
-Predict_result.to_csv(output_filename,mode='a' ,header = True, index = False)
+Predict_result.to_csv(output_filename,mode='w' ,header = True, index = False)
