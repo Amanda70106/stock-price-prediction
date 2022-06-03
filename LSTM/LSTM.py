@@ -3,6 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn import metrics
 import os
 
 def normalize(data):
@@ -94,10 +95,7 @@ regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
 regressor.fit(X_train, Y_train, epochs = 100, batch_size = 32)
 
 predicted_stock_price = regressor.predict(X_test)
-print("Ytest")
-print(Y_test)
-print("Predicted")
-print(predicted_stock_price)
+
 
 predicted_stock_price = pd.DataFrame(predicted_stock_price)
 
@@ -106,6 +104,18 @@ predicted_stock_price = denormalize(Y_test, predicted_stock_price)  # to get the
 backup_test = pd.concat([backup_test, predicted_stock_price], axis=1)
 
 output_directory = os.path.abspath('./output/') 
+predict_0 = np.array([0])
+# for i in range(51):
+#   if i==0:
+#     if predicted_stock_price[i+1]>y_prepredicted_stock_pricediction[i]:
+#       predict_0 = np.array([1])
+#     else:
+#       predict_0 = np.array([0])
+#   if predicted_stock_price[i+1]>predicted_stock_price[i]:
+#     predict_0 = np.append(predict_0, 1)
+#   else:
+#     predict_0 = np.append(predict_0, 0)
+# predict_0 = np.append(predict_0, 0)
 
 if not os.path.isdir(output_directory):
   os.makedirs(output_directory)
@@ -114,7 +124,9 @@ if not os.path.isdir(output_directory):
 output_filename = output_directory + "/LSTM_" + str(interval) + '_' + filename
 
 backup_test.to_csv(output_filename, header = True, index = False)
-
+print("Mean Absolute Error:",metrics.mean_absolute_error(Y_test,predicted_stock_price))
+print("Mean Squared Error:",metrics.mean_squared_error(Y_test,predicted_stock_price))
+print("Root Mean Squared Error:", np.sqrt(metrics.mean_squared_error(Y_test,predicted_stock_price)))
 # Visualising the results
 # plt.plot(Y_test, color = 'red', label = 'Real Google Stock Price')  # 紅線表示真實股價
 # plt.plot(predicted_stock_price, color = 'blue', label = 'Predicted Google Stock Price')  # 藍線表示預測股價
