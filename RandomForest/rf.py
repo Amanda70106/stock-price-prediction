@@ -30,7 +30,7 @@ for stock in stock_list:
 
   attributes=CurrentCustomers.drop(['data','diff','result'],axis=1)
   label=CurrentCustomers['result']
-  attributes = normalize(attributes)
+  #attributes = normalize(attributes)
   RFClassfier = RandomForestClassifier(criterion='gini',n_estimators=500,n_jobs=-1)
   print(RFClassfier)
   n_score = cross_val_score(RFClassfier,attributes,label,scoring='f1_macro',cv=10,n_jobs=-1)
@@ -41,7 +41,7 @@ for stock in stock_list:
   test_attributes = NewCustomers.drop(['data','diff','result'],axis=1)
   test_label=NewCustomers['result']
   original = test_attributes
-  test_attributes = normalize(test_attributes)
+  #test_attributes = normalize(test_attributes)
   y_prediction = learned_model.predict(test_attributes)
   from sklearn.metrics import classification_report,confusion_matrix
   print(confusion_matrix(test_label,y_prediction))
