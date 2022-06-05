@@ -74,11 +74,15 @@ for stock in stock_list:
     f = open(output_file, 'w', encoding='utf-8')
     original = df
     df = smoothCut(df,10)
-    df = df.fillna(0)
+    #df = df.fillna(0)
     CurrentCustomers=df.head(int(len(df)*0.9))
     NewCustomers=df.tail(len(df)-len(CurrentCustomers))
     NewCustomers.shape
+    is_NaN = df.isnull()
+    row_has_NaN = is_NaN.any(axis=1)
+    rows_with_NaN = df[row_has_NaN]
 
+    print(rows_with_NaN)
     attributes = CurrentCustomers.drop(['X','data', 'diff', 'result'], axis=1)
     attributes = normalize(attributes)
     label = CurrentCustomers['result']

@@ -43,4 +43,5 @@ for stock in stock_list:
     stock_data['WR10']= (stock_data['close']-stock_data['5_high'])/(stock_data['5_high']-stock_data['5_min'])*100
     stock_data=stock_data.drop(['5_min','5_high'],axis=1)
     stock_data=stock_data.drop(['MinLow','MaxHigh','RSV'],axis=1)
-    stock_data.to_csv("../csv/index/"+str(stock)+"_index.csv",encoding='UTF-8',header=True,index = False,mode='w')
+    stock_data=stock_data.fillna(0)
+    stock_data.to_csv("../csv/index/"+str(stock)+"_index.csv",header=True,index = False,mode='w')
