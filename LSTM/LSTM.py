@@ -14,11 +14,36 @@ def denormalize(original_data, scaled_data):
   denorm = scaled_data.apply(lambda x: x*(np.max(original_data)-np.min(original_data))+np.min(original_data))
   return denorm
 
+def smoothCut(df,days):
+    #moving average
+    df['close']=df['close'].rolling(days).mean()
+    #drop empty value
+    df=df.drop(df.index[range(days-1)],axis=0)
+    #calculate diff
+    r, c = df.shape
+    for i in range(r-1):
+        df.iloc[i,8] =df.iloc[i+1,7]-df.iloc[i,7]
+    for i in range(r-1):
+        if df.iloc[i,8]>0:
+            df.iloc[i,10]=1
+        else:
+            df.iloc[i,10]=0
+    # df.to_csv("middle.csv")
+    return df
+
+
 filename = input('Input the csv file name: ')
 input_directory = os.path.abspath("../csv") + '/'
 df = pd.read_csv(input_directory + filename)
+df = smoothCut(df, 10)
 
-df = df.drop(['X', 'diff', 'MinLow', 'MaxHigh'], axis=1)
+# df = df.drop(['X', 'diff', 'MinLow', 'MaxHigh'], axis=1)
+df = df.drop(['X', 'diff'], axis=1)
+
+# df['close'] = df['close'].rolling(10).mean()
+# df = df.drop(df.index[range(9)])
+
+
 split_boundary = 2600
 train_data = df.head(split_boundary)
 test_data_reverse_date = df.tail(df.shape[0] - split_boundary)
@@ -29,7 +54,7 @@ train_data_scaled = normalize(train_data)
 X_train = []   #預測點的前 60 天的資料
 Y_train = []   #預測點
 
-interval = 60
+interval = 30
 
 for i in range(interval, train_data.shape[0]):
     X_train.append(train_data_scaled.iloc[i-interval:i, :-1])
