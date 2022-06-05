@@ -33,7 +33,7 @@ def smoothCut(df,days):
 
 
 filename = input('Input the csv file name: ')
-input_directory = os.path.abspath("../csv") + '/'
+input_directory = os.path.abspath("../csv/index") + '/'
 df = pd.read_csv(input_directory + filename)
 df = smoothCut(df, 10)
 
@@ -151,9 +151,13 @@ output_directory = os.path.abspath('./output/')
 if not os.path.isdir(output_directory):
   os.makedirs(output_directory)
 
-print(confusion_matrix(original_result_nparry, predict_0))
-print(classification_report(original_result_nparry, predict_0))
-output_filename = output_directory + "/LSTM_" + str(interval) + '_' + filename
+output_filename = output_directory + "/" + str(interval) + '_' + filename
+output_report = output_directory + "/" + str(interval) + '_' + (filename.split("."))[0] + '_report.txt'
+
+report_file = open(output_report, 'w')
+print(confusion_matrix(original_result_nparry, predict_0), file=report_file)
+print(classification_report(original_result_nparry, predict_0), file=report_file)
+report_file.close()
 
 backup_test.to_csv(output_filename, header = True, index = False)
 print("Mean Absolute Error:",metrics.mean_absolute_error(real_close, predicted_stock_price_npary))
