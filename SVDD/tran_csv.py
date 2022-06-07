@@ -1,5 +1,5 @@
-fin = open('../csv/2379.csv','r')
-f = open('2379.csv','w',encoding='utf-8')
+fin = open('../csv/index/2449_index.csv','r')
+f = open('2449.csv','w',encoding='utf-8')
 fir = fin.readline()
 f.write(fir)
 lines = fin.readlines()

@@ -81,6 +81,7 @@ for stock in stock_list:
   csv_file = "./pridiction_result/" + str(stock) + ".csv"
   df = pd.read_csv(input_file)
   original = df
+  df = smoothCut(df,10)
   f = open(output_file, 'w',encoding='utf-8')
   CurrentCustomers=df.head(int(len(df)*0.9))
   NewCustomers=df.tail(len(df)-len(CurrentCustomers))
@@ -96,7 +97,7 @@ for stock in stock_list:
   nor_attr_train = scaler.transform(attributes_train)
   scaler.fit(attributes_test)
   nor_attr_test = scaler.transform(attributes_test)
-  mlp = MLPClassifier(hidden_layer_sizes=(15,13,8), max_iter=15000)
+  mlp = MLPClassifier(hidden_layer_sizes=(13), max_iter=15000)
   mlp.fit(nor_attr_train,label_train)
   predictions = mlp.predict(nor_attr_test)
   money.append(profit(original,predictions)) 
