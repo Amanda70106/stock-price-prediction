@@ -58,12 +58,12 @@ for stock in stock_list:
   print(stock)
   input_file = "../csv/index/" + str(stock) + "_index.csv"
   output_file = "output/" + str(stock) + "_result.txt"
-  csv_file = "../csv/pridiction_result/" + str(stock) + ".csv"
+  #csv_file = "../csv/pridiction_result/" + str(stock) + ".csv"
   df = pd.read_csv(input_file)
   f = open(output_file, 'w',encoding='utf-8')
   original = df
   df = smoothCut(df,10)
-  df = df.fillna(0)
+  #df = df.fillna(0)
   #df = df.reset_index(drop = True)
   CurrentCustomers=df.head(int(len(df)*0.9))
   NewCustomers=df.tail(len(df)-len(CurrentCustomers))
