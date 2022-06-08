@@ -109,8 +109,7 @@ for stock in stock_list:
     # print("Mean Squared Error:",metrics.mean_squared_error(test_lable,y_prediction))
     # print("Root Mean Squared Error:", np.sqrt(metrics.mean_squared_error(test_lable,y_prediction)))
     prediction_result = pd.DataFrame(NewPrice)
-    predict_0 = np.array([0])
-    for i in range(len(y_prediction)-2):
+    for i in range(len(y_prediction)-1):
         if i == 0:
             if y_prediction[i+1] > y_prediction[i]:
                 predict_0 = np.array([1])
