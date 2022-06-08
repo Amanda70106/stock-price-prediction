@@ -41,7 +41,7 @@ def smoothCut(df, days):
             df.iloc[i, 10] = 1
         else:
             df.iloc[i, 10] = 0
-    df.to_csv("middle.csv")
+    #df.to_csv("middle.csv")
     return df
 
 
@@ -73,6 +73,9 @@ def profit(df, signal):  # df is original input data (from csv file and make clo
 
 money = []
 mat = []
+mae = []
+mse = []
+rmse = []
 score = pd.DataFrame()
 stock_list = [1210, 1231, 2344, 2449, 2603, 2633, 3596, 1215, 1232, 2345, 2454, 2607, 2634, 3682, 1216, 1434, 2379, 2455, 2609,
               2637, 4904, 1218, 1702, 2408, 2459, 2610, 3034, 5388, 1227, 2330, 2412, 2468, 2615, 3035, 1229, 2337, 2439, 2498, 2618, 3045]
@@ -107,7 +110,7 @@ for stock in stock_list:
     # print("Root Mean Squared Error:", np.sqrt(metrics.mean_squared_error(test_lable,y_prediction)))
     prediction_result = pd.DataFrame(NewPrice)
     predict_0 = np.array([0])
-    for i in range(51):
+    for i in range(len(y_prediction)-2):
         if i == 0:
             if y_prediction[i+1] > y_prediction[i]:
                 predict_0 = np.array([1])
@@ -129,11 +132,14 @@ for stock in stock_list:
     prediction_result.to_csv(output_filename, mode='w',
                              header=True, index=False)
 
-    result = classification_report(test_label, y_prediction,output_dict=True)
-    score1 = pd.DataFrame(result).transpose()
+    classResult = classification_report(result,predict_0,output_dict=True)
+    score1 = pd.DataFrame(classResult).transpose()
     ndf = score1.unstack().to_frame().T
     ndf.columns = ndf.columns.map('{0[0]}_{0[1]}'.format) 
     score = pd.concat([score, ndf], ignore_index = True, axis = 0)
+    mae.append(metrics.mean_absolute_error(test_lable, y_prediction))
+    mse.append(metrics.mean_squared_error(test_lable, y_prediction))
+    rmse.append(np.sqrt(metrics.mean_squared_error(test_lable, y_prediction)))
 
     f.write(str(confusion_matrix(result, predict_0)))
     f.write('\n')
@@ -154,4 +160,7 @@ p = pd.DataFrame(data=d)
 p.to_csv("outputr/profit.csv", header=True, index=False, mode='a')
 score.insert(loc=0, column='StockName', value=stock_list)
 score['Matthew']=mat
+score['MAE']=mae
+score['MSE']=mse
+score['RMSE']=rmse
 score.to_csv("precisionRate_boost.csv",header = True, index = False,mode='w')
