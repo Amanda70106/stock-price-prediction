@@ -144,7 +144,7 @@ print(real_close.shape)
 print(predicted_stock_price_npary.shape)
 print(predict_0.shape)
 
-backup_test = pd.DataFrame({'date': backup_test_nparry, 'real_close': real_close, 'predict_close': predicted_stock_price_npary, 'predict_result': predict_0})
+backup_test = pd.DataFrame({'date': backup_test_nparry, 'real_close': real_close, 'predict_close': predicted_stock_price_npary, 'Prediction_Result': predict_0})
 
 output_directory = os.path.abspath('./output/') 
 
