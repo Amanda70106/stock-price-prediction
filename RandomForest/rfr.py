@@ -75,6 +75,8 @@ money = []
 mat = []
 mae = []
 mse = []
+fscore_m = []
+fscore_s =[]
 rmse = []
 score = pd.DataFrame()
 stock_list = [1210, 1231, 2344, 2449, 2603, 2633, 3596, 1215, 1232, 2345, 2454, 2607, 2634, 3682, 1216, 1434, 2379, 2455, 2609,
@@ -98,6 +100,8 @@ for stock in stock_list:
     n_score = cross_val_score(RFRegressor, attributes, label,
                               scoring='neg_mean_squared_error', cv=10, n_jobs=-1)
     print("MSE: %.3f (%.3f)" % (mean(n_score), std(n_score)))
+    fscore_m.append(mean(n_score))
+    fscore_s.append(std(n_score))
     learned_model = RFRegressor.fit(attributes, label)
     test_attributes = NewPrice.drop('close', axis=1)
     result = test_attributes['result']
@@ -109,17 +113,17 @@ for stock in stock_list:
     # print("Mean Squared Error:",metrics.mean_squared_error(test_lable,y_prediction))
     # print("Root Mean Squared Error:", np.sqrt(metrics.mean_squared_error(test_lable,y_prediction)))
     prediction_result = pd.DataFrame(NewPrice)
-    predict_0 = np.array([0])
-    for i in range(len(y_prediction)-2):
+    for i in range(len(y_prediction)-1):
         if i == 0:
             if y_prediction[i+1] > y_prediction[i]:
                 predict_0 = np.array([1])
             else:
                 predict_0 = np.array([0])
-        if y_prediction[i+1] > y_prediction[i]:
-            predict_0 = np.append(predict_0, 1)
         else:
-            predict_0 = np.append(predict_0, 0)
+            if y_prediction[i+1] > y_prediction[i]:
+                predict_0 = np.append(predict_0, 1)
+            else:
+                predict_0 = np.append(predict_0, 0)
     predict_0 = np.append(predict_0, 0)
     money.append(profit(original, predict_0))
     # print(confusion_matrix(result,predict_0))
@@ -163,4 +167,6 @@ score['Matthew']=mat
 score['MAE']=mae
 score['MSE']=mse
 score['RMSE']=rmse
+score['10F-Score-mean']=fscore_m
+score['10F-Score-std']=fscore_s
 score.to_csv("precisionRate_rfr.csv",header = True, index = False,mode='w')
