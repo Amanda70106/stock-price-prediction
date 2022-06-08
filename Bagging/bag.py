@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import BaggingClassifier
+import matplotlib.pyplot as plt
 
 
 def normalize(data):
@@ -61,23 +62,21 @@ def profit(df, signal):  # df is original input data (from csv file and make clo
         previous = signal.iloc[i]  # 前一天是要買還是賣
     return money
 
-
+fscore_m = []
+fscore_s =[]
 money = []
 mat = []
 score = pd.DataFrame()
-stock_list = [1210, 1231, 2344, 2449, 2603, 2633, 3596, 1215, 1232, 2345, 2454, 2607, 2634, 3682, 1216, 1434, 2379, 2455, 2609,
-                    2637, 4904, 1218, 1702, 2408, 2459, 2610, 3034, 5388, 1227, 2330, 2412, 2468, 2615, 3035, 1229, 2337, 2439, 2498, 2618, 3045]
+stock_list =[1210, 1231, 2344, 2449, 2603, 2633, 3596, 1215, 1232, 2345, 2454, 2607, 2634, 3682, 1216, 1434, 2379, 2455, 2609,
+                   2637, 4904, 1218, 1702, 2408, 2459, 2610, 3034, 5388, 1227, 2330, 2412, 2468, 2615, 3035, 1229, 2337, 2439, 2498, 2618, 3045]
 for stock in stock_list:
     print(stock)
     input_file = "../csv/index/" + str(stock) + "_index.csv"
     output_file = "output/" + str(stock) + "_result.txt"
-    #csv_file = "../csv/pridiction_result/" + str(stock) + ".csv"
     df = pd.read_csv(input_file)
     f = open(output_file, 'w', encoding='utf-8')
     original = df
     df = smoothCut(df, 10)
-    #df = df.fillna(0)
-    #df = df.reset_index(drop = True)
     CurrentCustomers = df.head(int(len(df)*0.9))
     NewCustomers = df.tail(len(df)-len(CurrentCustomers))
    # print(CurrentCustomers)
@@ -94,6 +93,8 @@ for stock in stock_list:
 
     #print(n_score)
     print('F-Score: %.3f (%.3f)' % (mean(n_score), std(n_score)))
+    fscore_m.append(mean(n_score))
+    fscore_s.append(std(n_score))
     learned_model = model.fit(attributes, label)
     test_attributes = NewCustomers.drop(
         ['X', 'data', 'diff', 'result'], axis=1)
@@ -127,4 +128,6 @@ p = pd.DataFrame(data=d)
 p.to_csv("output/profit.csv", header=True, index=False, mode='a')
 score.insert(loc=0, column='StockName', value=stock_list)
 score['Matthew']=mat
+score['10F-Score-mean']=fscore_m
+score['10F-Score-std']=fscore_s
 score.to_csv("precisionRate_bag.csv",header = True, index = False,mode='w')
