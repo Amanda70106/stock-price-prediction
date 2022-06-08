@@ -163,4 +163,4 @@ score['Matthew']=mat
 score['MAE']=mae
 score['MSE']=mse
 score['RMSE']=rmse
-score.to_csv("precisionRate_boost.csv",header = True, index = False,mode='w')
+score.to_csv("precisionRate_rfr.csv",header = True, index = False,mode='w')
