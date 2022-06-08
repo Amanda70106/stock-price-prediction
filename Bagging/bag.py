@@ -33,7 +33,6 @@ def smoothCut(df, days):
             df.iloc[i, 10] = 1
         else:
             df.iloc[i, 10] = 0
-    # df.to_csv("middle.csv")
     return df
 
 
@@ -77,22 +76,17 @@ for stock in stock_list:
     f = open(output_file, 'w', encoding='utf-8')
     original = df
     df = smoothCut(df, 10)
+
     CurrentCustomers = df.head(int(len(df)*0.9))
     NewCustomers = df.tail(len(df)-len(CurrentCustomers))
-   # print(CurrentCustomers)
     attributes = CurrentCustomers.drop(['X', 'data', 'diff', 'result'], axis=1)
-    # print(attributes)
-    # the result with normalization is worse than the one without normalization
     attributes = normalize(attributes)
     label = CurrentCustomers['result']
-#   print(label)
-#   print(attributes)
     model = BaggingClassifier(base_estimator=None, n_estimators=500, n_jobs=-1)
     n_score = cross_val_score(
         model, attributes, label, scoring='f1_macro', cv=10, n_jobs=-1, error_score='raise')
-
-    #print(n_score)
     print('F-Score: %.3f (%.3f)' % (mean(n_score), std(n_score)))
+
     fscore_m.append(mean(n_score))
     fscore_s.append(std(n_score))
     learned_model = model.fit(attributes, label)
@@ -102,8 +96,6 @@ for stock in stock_list:
     test_label = NewCustomers['result']
     y_prediction = learned_model.predict(test_attributes)
     from sklearn.metrics import classification_report, confusion_matrix
-    # print(confusion_matrix(test_label,y_prediction))
-    # print(classification_report(test_label,y_prediction))
     m = mathew(test_label, y_prediction)
     mat.append(m)
     money.append(profit(original, y_prediction))
