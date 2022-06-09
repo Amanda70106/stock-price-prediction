@@ -87,7 +87,7 @@ for stock in stock_list:
     #csv_file = "../csv/pridiction_result/" + str(stock) + ".csv"
     df = pd.read_csv(input_file)
     f = open(output_file, 'w', encoding='utf-8')
-    original = df
+    original = df.copy(deep=True)
     df = smoothCut(df, 10)
     HistoricalPrice = df.head(int(len(df)*0.9))
     NewPrice = df.tail(len(df)-len(HistoricalPrice))
@@ -112,7 +112,7 @@ for stock in stock_list:
     # print("Mean Absolute Error:",metrics.mean_absolute_error(test_lable,y_prediction))
     # print("Mean Squared Error:",metrics.mean_squared_error(test_lable,y_prediction))
     # print("Root Mean Squared Error:", np.sqrt(metrics.mean_squared_error(test_lable,y_prediction)))
-    prediction_result = pd.DataFrame(NewPrice)
+    prediction_result = pd.DataFrame(original.tail(len(test_attributes)))
     predict_0 = np.empty([0])
 
     for i in range(y_prediction.shape[0]-1):
