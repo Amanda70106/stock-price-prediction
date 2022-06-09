@@ -74,7 +74,7 @@ for stock in stock_list:
     output_file = "output/" + str(stock) + "_result.txt"
     df = pd.read_csv(input_file)
     f = open(output_file, 'w', encoding='utf-8')
-    original = df
+    original = df.copy(deep=True)
     df = smoothCut(df, 10)
 
     CurrentCustomers = df.head(int(len(df)*0.9))

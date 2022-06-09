@@ -1,15 +1,15 @@
-[[102  35]
- [ 43 115]]
+[[ 99  38]
+ [ 42 116]]
               precision    recall  f1-score   support
 
-           0       0.70      0.74      0.72       137
-           1       0.77      0.73      0.75       158
+           0       0.70      0.72      0.71       137
+           1       0.75      0.73      0.74       158
 
-    accuracy                           0.74       295
-   macro avg       0.74      0.74      0.74       295
-weighted avg       0.74      0.74      0.74       295
+    accuracy                           0.73       295
+   macro avg       0.73      0.73      0.73       295
+weighted avg       0.73      0.73      0.73       295
 
-Mean Absolute Error:0.3062796441016198
-Mean Squared Error:0.17945259609541417
-Root Mean Squared Error:0.4236184558012247
-matthews: 0.4712
+Mean Absolute Error:0.3071540309212066
+Mean Squared Error:0.17656082449129637
+Root Mean Squared Error:0.4201914141094465
+matthews: 0.4561
