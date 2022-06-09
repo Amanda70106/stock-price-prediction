@@ -113,18 +113,27 @@ for stock in stock_list:
     # print("Mean Squared Error:",metrics.mean_squared_error(test_lable,y_prediction))
     # print("Root Mean Squared Error:", np.sqrt(metrics.mean_squared_error(test_lable,y_prediction)))
     prediction_result = pd.DataFrame(NewPrice)
-    for i in range(len(y_prediction)-1):
-        if i == 0:
-            if y_prediction[i+1] > y_prediction[i]:
-                predict_0 = np.array([1])
-            else:
-                predict_0 = np.array([0])
+    predict_0 = np.empty([0])
+
+    for i in range(y_prediction.shape[0]-1):
+        if y_prediction[i] < y_prediction[i+1]:
+            predict_0 = np.append(predict_0, 1)
         else:
-            if y_prediction[i+1] > y_prediction[i]:
-                predict_0 = np.append(predict_0, 1)
-            else:
-                predict_0 = np.append(predict_0, 0)
+            predict_0 = np.append(predict_0, 0)
+
     predict_0 = np.append(predict_0, 0)
+    # for i in range(len(y_prediction)-1):
+    #     if i == 0:
+    #         if y_prediction[i+1] > y_prediction[i]:
+    #             predict_0 = np.array([1])
+    #         else:
+    #             predict_0 = np.array([0])
+    #     else:
+    #         if y_prediction[i+1] > y_prediction[i]:
+    #             predict_0 = np.append(predict_0, 1)
+    #         else:
+    #             predict_0 = np.append(predict_0, 0)
+    # predict_0 = np.append(predict_0, 0)
     money.append(profit(original, predict_0))
     # print(confusion_matrix(result,predict_0))
     # print(classification_report(result,predict_0))

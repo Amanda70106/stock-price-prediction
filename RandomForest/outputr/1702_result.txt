@@ -9,7 +9,7 @@
    macro avg       0.69      0.69      0.69       295
 weighted avg       0.69      0.69      0.69       295
 
-Mean Absolute Error:0.2951524070502939
-Mean Squared Error:0.1503041498105912
-Root Mean Squared Error:0.3876907914957372
+Mean Absolute Error:0.2906229913055101
+Mean Squared Error:0.14516380591399303
+Root Mean Squared Error:0.38100368228403386
 matthews: 0.3713
