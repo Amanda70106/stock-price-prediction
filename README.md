@@ -1,1 +1,1 @@
-# uki-uki-diasuki
+# stock-price-prediction
